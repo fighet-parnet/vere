@@ -168,6 +168,7 @@ cc_toolchain_config(
     # See https://github.com/bazelbuild/bazel/issues/15875.
     ar_flags = "rcs",
     cc = "/usr/bin/clang",
+    cc_flags = ["-flto=thin"],
     compiler = "clang",
     compiler_version = "//:clang_version",
     ld = "/usr/bin/ld",
