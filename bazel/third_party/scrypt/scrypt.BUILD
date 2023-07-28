@@ -28,6 +28,11 @@ cc_library(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = ["."],
     local_defines = ["_FORTIFY_SOURCE=2"],
     visibility = ["//visibility:public"],

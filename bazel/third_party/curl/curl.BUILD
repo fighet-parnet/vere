@@ -61,6 +61,11 @@ configure_make(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     env = {
         "URBIT_RUNTIME_OPENSSL": "$$PWD/$(GENDIR)/external/openssl/openssl",
     },

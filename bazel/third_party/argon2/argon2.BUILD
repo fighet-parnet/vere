@@ -38,6 +38,11 @@ cc_library(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = [
         "include",
         "src/blake2",

@@ -18,6 +18,12 @@ COPTS = ["-O3"] + select({
     "//conditions:default": []
 })
 
+LINKOPTS = select({
+    "@//:lto": ['-flto'],
+    "@//:thinlto": ['-flto=thin'],
+    "//conditions:default": []
+})
+
 #
 # H2O DEPENDENCIES
 #
@@ -28,6 +34,7 @@ cc_library(
     srcs = ["deps/cloexec/cloexec.c"],
     hdrs = ["deps/cloexec/cloexec.h"],
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/cloexec"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -38,6 +45,7 @@ cc_library(
     name = "golombset",
     hdrs = ["deps/golombset/golombset.h"],
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/golombset"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -49,6 +57,7 @@ cc_library(
     srcs = glob(["deps/klib/*.c"]),
     hdrs = glob(["deps/klib/*.h"]),
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/klib"],
     linkstatic = True,
     local_defines = select({
@@ -71,6 +80,7 @@ cc_library(
     srcs = ["deps/libgkc/gkc.c"],
     hdrs = ["deps/libgkc/gkc.h"],
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/libgkc"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -95,7 +105,8 @@ cc_library(
         "-Wconversion",
         "-gdwarf-3",
         "-O2",
-    ],
+    ] + COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/libyrmcds"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -107,6 +118,7 @@ cc_library(
     srcs = ["deps/picohttpparser/picohttpparser.c"],
     hdrs = ["deps/picohttpparser/picohttpparser.h"],
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/picohttpparser"],
     linkstatic = True,
     local_defines = select({
@@ -134,7 +146,8 @@ cc_library(
         "-Wall",
         "-O2",
         "-g",
-    ],
+    ] + COPTS,
+    linkopts = LINKOPTS,
     includes = [
         "deps/picotls/include",
         "deps/picotls/include/picotls",
@@ -160,6 +173,7 @@ cc_library(
     name = "ssl_conservatory",
     hdrs = ["deps/ssl-conservatory/openssl/openssl_hostname_validation.h"],
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/ssl-conservatory/openssl"],
     linkstatic = True,
     textual_hdrs = ["deps/ssl-conservatory/openssl/openssl_hostname_validation.c"],
@@ -171,6 +185,7 @@ cc_library(
     name = "yoml",
     hdrs = glob(["deps/yoml/*.h"]),
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/yoml"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -222,6 +237,7 @@ cc_library(
         ],
     ),
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = [
         "deps/picotls/deps/cifra/src",
         "deps/picotls/deps/cifra/src/ext",
@@ -241,6 +257,7 @@ cc_library(
     ],
     hdrs = ["deps/picotls/deps/micro-ecc/uECC.h"],
     copts = COPTS,
+    linkopts = LINKOPTS,
     includes = ["deps/picotls/deps/micro-ecc"],
     textual_hdrs = [
         "deps/picotls/deps/micro-ecc/asm_arm.inc",
@@ -350,7 +367,8 @@ cc_library(
         "-g3",
         "-O2",
         "-pthread",
-    ] + CC_WARNING_FLAGS,
+    ] + CC_WARNING_FLAGS + COPTS,
+    linkopts = LINKOPTS,
     includes = [
         "include",
         "include/h2o",

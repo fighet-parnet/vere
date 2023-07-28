@@ -34,6 +34,11 @@ configure_make(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     lib_source = ":all",
     out_static_libs = [
         "libssl.a",

@@ -23,6 +23,11 @@ cc_library(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     include_prefix = "lmdb",
     includes = ["."],
     local_defines = select({

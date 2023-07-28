@@ -6,6 +6,11 @@ cc_library(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     linkstatic = True,
     visibility = ["//visibility:public"],
 )

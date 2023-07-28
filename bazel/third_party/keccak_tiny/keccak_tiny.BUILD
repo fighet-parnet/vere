@@ -10,6 +10,11 @@ cc_library(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = ["."],
     local_defines = select({
         # TODO: confirm which platforms have memset_s().

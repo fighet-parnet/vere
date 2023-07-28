@@ -285,6 +285,11 @@ cc_library(
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
     }),
+    linkopts = select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = ["source/include"],
     local_defines = [
         "SOFTFLOAT_ROUND_ODD",
@@ -627,6 +632,11 @@ cc_library(
         "-Werror-implicit-function-declaration",
         "-O2",
     ] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
+    linkopts = select({
         "@//:lto": ['-flto'],
         "@//:thinlto": ['-flto=thin'],
         "//conditions:default": []
