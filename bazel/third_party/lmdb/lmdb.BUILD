@@ -18,7 +18,11 @@ cc_library(
         "-Wno-unused-parameter",
         "-Wbad-function-cast",
         "-Wuninitialized",
-    ],
+    ] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     include_prefix = "lmdb",
     includes = ["."],
     local_defines = select({

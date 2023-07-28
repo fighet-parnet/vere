@@ -29,7 +29,11 @@ configure_make(
         ],
         "//conditions:default": [],
     }),
-    copts = ["-O3"],
+    copts = ["-O3"] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     lib_source = ":all",
     out_static_libs = [
         "libssl.a",

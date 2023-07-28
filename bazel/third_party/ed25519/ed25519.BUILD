@@ -8,7 +8,11 @@ cc_library(
         exclude = ["src/ed25519.h"],
     ),
     hdrs = ["src/ed25519.h"],
-    copts = ["-O3"],
+    copts = ["-O3"] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = ["src"],
     visibility = ["//visibility:public"],
 )

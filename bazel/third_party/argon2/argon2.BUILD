@@ -33,7 +33,11 @@ cc_library(
         "-g",
         "-Isrc",
         "-DARGON2_NO_THREADS",
-    ],
+    ] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = [
         "include",
         "src/blake2",

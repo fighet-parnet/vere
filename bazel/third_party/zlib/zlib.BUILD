@@ -12,7 +12,11 @@ configure_make(
         "//conditions:default": ["--jobs=`nproc`"],
     }),
     configure_options = ["--static"],
-    copts = ["-O3"],
+    copts = ["-O3"] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     lib_source = ":all",
     out_static_libs = ["libz.a"],
     visibility = ["//visibility:public"],

@@ -23,7 +23,11 @@ configure_make(
         "@//:macos_aarch64": ["--disable-assembly"],
         "//conditions:default": [],
     }),
-    copts = ["-O3"],
+    copts = ["-O3"] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     lib_source = ":all",
     out_static_libs = ["libgmp.a"],
     visibility = ["//visibility:public"],

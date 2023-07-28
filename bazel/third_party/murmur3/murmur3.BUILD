@@ -15,6 +15,10 @@ cc_library(
             "-c",
         ],
         "//conditions:default": [],
+    }) + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
     }),
     includes = ["."],
     visibility = ["//visibility:public"],

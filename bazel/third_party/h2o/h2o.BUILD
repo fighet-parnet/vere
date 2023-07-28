@@ -12,6 +12,12 @@ CC_WARNING_FLAGS = [
     "-Werror=incompatible-pointer-types",
 ]
 
+COPTS = ["-O3"] + select({
+    "@//:lto": ['-flto'],
+    "@//:thinlto": ['-flto=thin'],
+    "//conditions:default": []
+})
+
 #
 # H2O DEPENDENCIES
 #
@@ -21,7 +27,7 @@ cc_library(
     name = "cloexec",
     srcs = ["deps/cloexec/cloexec.c"],
     hdrs = ["deps/cloexec/cloexec.h"],
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/cloexec"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -31,7 +37,7 @@ cc_library(
 cc_library(
     name = "golombset",
     hdrs = ["deps/golombset/golombset.h"],
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/golombset"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -42,7 +48,7 @@ cc_library(
     name = "klib",
     srcs = glob(["deps/klib/*.c"]),
     hdrs = glob(["deps/klib/*.h"]),
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/klib"],
     linkstatic = True,
     local_defines = select({
@@ -64,7 +70,7 @@ cc_library(
     name = "libgkc",
     srcs = ["deps/libgkc/gkc.c"],
     hdrs = ["deps/libgkc/gkc.h"],
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/libgkc"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -100,7 +106,7 @@ cc_library(
     name = "picohttpparser",
     srcs = ["deps/picohttpparser/picohttpparser.c"],
     hdrs = ["deps/picohttpparser/picohttpparser.h"],
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/picohttpparser"],
     linkstatic = True,
     local_defines = select({
@@ -153,7 +159,7 @@ cc_library(
 cc_library(
     name = "ssl_conservatory",
     hdrs = ["deps/ssl-conservatory/openssl/openssl_hostname_validation.h"],
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/ssl-conservatory/openssl"],
     linkstatic = True,
     textual_hdrs = ["deps/ssl-conservatory/openssl/openssl_hostname_validation.c"],
@@ -164,7 +170,7 @@ cc_library(
 cc_library(
     name = "yoml",
     hdrs = glob(["deps/yoml/*.h"]),
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/yoml"],
     linkstatic = True,
     visibility = ["//visibility:private"],
@@ -215,7 +221,7 @@ cc_library(
             "deps/picotls/deps/cifra/src/ext/*.h",
         ],
     ),
-    copts = ["-O3"],
+    copts = COPTS,
     includes = [
         "deps/picotls/deps/cifra/src",
         "deps/picotls/deps/cifra/src/ext",
@@ -234,7 +240,7 @@ cc_library(
         "deps/picotls/deps/micro-ecc/uECC_vli.h",
     ],
     hdrs = ["deps/picotls/deps/micro-ecc/uECC.h"],
-    copts = ["-O3"],
+    copts = COPTS,
     includes = ["deps/picotls/deps/micro-ecc"],
     textual_hdrs = [
         "deps/picotls/deps/micro-ecc/asm_arm.inc",

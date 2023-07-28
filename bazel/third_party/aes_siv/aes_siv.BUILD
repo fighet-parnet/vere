@@ -14,7 +14,11 @@ cc_library(
         "config.h",
     ],
     hdrs = ["aes_siv.h"],
-    copts = ["-O3"],
+    copts = ["-O3"] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = ["."],
     visibility = ["//visibility:public"],
     deps = ["@openssl"],

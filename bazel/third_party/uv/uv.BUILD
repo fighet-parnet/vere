@@ -20,7 +20,11 @@ configure_make(
         "@//:linux_x86_64": ["--host=x86_64-linux-musl"],
         "//conditions:default": [],
     }),
-    copts = ["-O3"],
+    copts = ["-O3"] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     lib_source = ":all",
     out_static_libs = ["libuv.a"],
     targets = ["install"],

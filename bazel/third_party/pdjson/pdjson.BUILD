@@ -11,6 +11,10 @@ cc_library(
         "-Wall",
         "-Wextra",
         "-Wno-missing-field-initializers"
-    ],
+    ] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     visibility = ["//visibility:public"]
 )

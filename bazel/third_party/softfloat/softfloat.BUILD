@@ -280,7 +280,11 @@ cc_library(
         "-Iexternal/softfloat/source/ARM-VFPv2",
         "-Werror-implicit-function-declaration",
         "-O2",
-    ],
+    ] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     includes = ["source/include"],
     local_defines = [
         "SOFTFLOAT_ROUND_ODD",
@@ -622,7 +626,11 @@ cc_library(
         "-Iexternal/softfloat/source/8086-SSE",
         "-Werror-implicit-function-declaration",
         "-O2",
-    ],
+    ] + select({
+        "@//:lto": ['-flto'],
+        "@//:thinlto": ['-flto=thin'],
+        "//conditions:default": []
+    }),
     # `SOFTFLOAT_FAST_INT64` is used in `softfloat.h` and therefore needs to be
     # passed to dependencies.
     defines = ["SOFTFLOAT_FAST_INT64"],
