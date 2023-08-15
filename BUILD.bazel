@@ -1,4 +1,5 @@
 load("//bazel:common_settings.bzl", "string_flag")
+load("//bazel:common_settings.bzl", "bool_flag_with_envvar")
 exports_files(["PACE"])
 
 #
@@ -69,6 +70,36 @@ config_setting(
     }
 )
 
+#
+# Information required to build 
+#
+
+bool_flag_with_envvar(
+    name = "instrument_pgo",
+    build_setting_default = False,
+    envvar = "VERE_INSTRUMENTATION_DIR",
+)
+
+config_setting(
+    name = "build_instrumentation",
+    flag_values = {
+        ":instrument_pgo": "True",
+    }
+)
+    
+bool_flag_with_envvar(
+    name = "use_pgo_data",
+    build_setting_default = False,
+    envvar = "VERE_INSTRUMENTATION_DIR",
+)
+
+config_setting(
+    name = "build_using_pgo_data",
+    flag_values = {
+        ":use_pgo_data": "True",
+    }
+)
+    
 #
 # COMPILERS
 #

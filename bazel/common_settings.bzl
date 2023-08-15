@@ -11,6 +11,48 @@ string_flag = rule(
     doc = "A string-typed build setting that can be set on the command line",
 )
 
+envvars_read = dict()
+
+def _capture_impl(ctx):
+    print("adding " + ctx.attrs.envvar + " to dictionary")
+    envvars_read[ctx.attrs.envvar] = ctx.configuration.default_shell_env[ctx.attrs.envvar]
+    value = ctx.build_setting_value
+    return BuildSettingInfo(value = value)
+
+bool_flag_with_envvar = rule(
+    implementation = _capture_impl,
+    build_setting = config.bool(flag = True),
+    attrs = {
+        "envvar": attr.string(
+            doc = "The environment variable name which will be saved for use by vere_{binary,library} at build time.",
+        ),
+    },
+    doc = "A bool type flag which captures an environment variable for use by vere_library",
+)
+
+# def _define_from_flag_impl(ctx):
+#     return CcInfo(
+#         compilation_context = cc_common.create_compilation_context(
+#             defines = depset([
+#                 "FLAG=\"{}\"".format(
+#                     ctx.attr.value[BuildSettingInfo].value,
+#                 ),
+#             ]),
+#         ),
+#     )
+# define_from_flag = rule(
+#     implementation = _define_from_flag_impl,
+#     attrs = {
+#         "value": attr.label(),
+#     },
+# )
+
+ # + select({
+ #        "//:build_instrumentation": ["-fprofile-generate=" + envvars_read["VERE_INSTRUMENTATION_DIR"]],
+ #        "//conditions:default": [],
+ #    })
+
+
 def vere_library(copts = [], linkopts = [], **kwargs):
   native.cc_library(
     copts = copts + select({
